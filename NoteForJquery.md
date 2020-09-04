@@ -78,33 +78,37 @@ $('p').click(function () {
 
 
 
-#  队列
+#  数据处理
 
-## .queue()
+##  队列
+
+###  .queue()
 
 ![image-20200904191812559](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904191812559.png)
 
-###  常用.queue()来显示在匹配的元素上的已经执行的函数列队（并且可用一些方法类似于.length），.queue（function()）可以在队列中插入自定义函数
+####  常用.queue()来显示在匹配的元素上的已经执行的函数列队（并且可用一些方法类似于.length），.queue（function()）可以在队列中插入自定义函数
 
 
 
 
 
-##  .dequeue()
+###  .dequeue()
+
+
 
 ![image-20200904192144942](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904192144942.png)
 
-###  常用于.queue(function(){ /*xxxxxxx*/    ;  $.dequeue(this);  })  从而移除自定义插入的函数并且继续queue队列类函数的发生
+#### 常用于.queue(function(){ /*xxxxxxx*/    ;  $.dequeue(this);  })  从而移除自定义插入的函数并且继续queue队列类函数的发生
 
 
 
-##  .clearQueue()
+### clearQueue()
 
 ![image-20200904192502182](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904192502182.png)
 
 
 
-##  
+
 
 ```javascript
 //一个动画实例
@@ -138,3 +142,52 @@ $('p').click(function () {
     showIt();
 ```
 
+
+
+
+
+
+
+## data
+
+### .data()
+
+![image-20200904214246134](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904214246134.png)
+
+![image-20200904214313336](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904214313336.png)
+
+类似于一下例子
+
+![image-20200904214344276](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904214344276.png)
+
+
+
+###  jquery.hasdata()
+
+![image-20200904214936792](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904214936792.png)
+
+.
+
+
+
+### jquery.data()
+
+![image-20200904215053924](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904215053924.png)
+
+
+
+
+
+##  集合函数
+
+
+
+###  .each()
+
+![image-20200904215852218](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904215852218.png)
+
+
+
+###  .jquery.params()
+
+![image-20200904215935323](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904215935323.png)
