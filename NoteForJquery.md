@@ -68,3 +68,73 @@ $('p').click(function () {
 })
 ```
 
+
+
+
+
+
+
+
+
+
+
+#  队列
+
+## .queue()
+
+![image-20200904191812559](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904191812559.png)
+
+###  常用.queue()来显示在匹配的元素上的已经执行的函数列队（并且可用一些方法类似于.length），.queue（function()）可以在队列中插入自定义函数
+
+
+
+
+
+##  .dequeue()
+
+![image-20200904192144942](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904192144942.png)
+
+###  常用于.queue(function(){ /*xxxxxxx*/    ;  $.dequeue(this);  })  从而移除自定义插入的函数并且继续queue队列类函数的发生
+
+
+
+##  .clearQueue()
+
+![image-20200904192502182](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200904192502182.png)
+
+
+
+##  
+
+```javascript
+//一个动画实例
+ var div = $("div");
+
+    function runIt() {
+        div.show("slow");
+        div.animate({left:'+=200'},2000);
+        div.slideToggle(1000);
+        div.slideToggle("fast");
+        div.animate({left:'-=200'},1500);
+        //.queue()
+        div.queue(function () {
+           alert("插入一个函数");
+            //移除自身
+           $.dequeue(this);
+        });
+        
+        div.hide("slow");
+        div.show(1200);
+        div.slideUp("normal", runIt);
+    }
+
+    function showIt() {
+        var n = div.queue("fx");
+        $("span").text( n.length );
+        setTimeout(showIt, 100);
+    }
+
+    runIt();
+    showIt();
+```
+
