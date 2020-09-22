@@ -1,4 +1,4 @@
-#  Vue学习日志
+#    Vue学习日志
 
 ##  指令中的动态参数
 
@@ -163,4 +163,152 @@ Vue.component('blog-input', {
 
 //v-on 那句意思是，当input事件触发时，触发另一个input事件，并传入参数，值为$event.target.value，可以利用$event回调得到。
 ```
+
+
+
+
+
+
+
+## VUE的生命周期*
+
+**文档图示**
+
+![image-20200922124340245](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922124340245.png)
+
+**所有钩子函数有：**
+
+- beforeCreate
+
+- created
+
+- beforeMount
+
+- mounted
+
+- beforeUpdate
+
+- updated
+
+- beforeDestroy
+
+- destroyed
+
+  
+
+### 1. beforeCreate
+
+<img src="C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922130106903.png" alt="image-20200922130106903" style="zoom:200%;" />
+
+**可以看到这个时候正在初始化事件，进行数据的观测（遍历data对象下所有属性并将其转化为getter和setter，也就是为其添加一个被观察者对象【被观察者对象： 观测并连接data内属性和视图的关系】，所以在后来添加新的data的属性时视图不更新，就是因为没有被放到观察者对象中去。解决方法为用$set方法来新增属性）。**
+
+
+
+**有点疑惑的是这时候打印出来的data明明是undefined，怎么还能有这些操作。这是因为data是函数，这个时候data没执行所以没有返回数据所以是undefined**
+
+**![image-20200922135944553](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922135944553.png)但是用该方法可以看到data函数是存在的![image-20200922140021235](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922140021235.png)**
+
+
+
+
+
+### 2. created
+
+![image-20200922130219190](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922130219190.png)
+
+**created状态中，vue实例已经创建完成完毕，数据已经和data属性进行了绑定且可使用。此时dom不存在，无法引用$el。（放入data中的属性当值发生改变的同时，视图层view也会发生变化，不过不是这个阶段）**
+
+**这个生命周期可以进行axios请求，但因为这时页面还未渲染，所以请求过长会导致比较久的白屏，建议加上Loading**
+
+
+
+
+
+#### 2. created — beforeMount
+
+![image-20200922130511688](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922130511688.png)
+
+**这个时候发生的事情如图所示**
+
+**1.判断vue对象是否有el选项。如果有的话就继续向下编译，没有的话就暂时停止生命周期，直到在该vue实例上调用vm.$mount(el) — 也就是挂载上el，然后继续下一步**
+
+**2.完成上一步后，判断该vue对象中是否有template选项。如果有则如下图![image-20200922130942443](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922130942443.png)**
+
+- **如果vue实例对象中有template参数选项，则将其作为模板编译成render函数**
+
+- **如果没有template选项，则将外部HTML作为模板编译。**
+
+- **所以可知： template模板优先级高于outer HTML**
+
+- **但当vue实例对象又render函数时，该render渲染优先级最高![image-20200922132059698](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922132059698.png)**
+
+- **综上所述： render函数选项 > template选项 > outer HTML**
+
+  
+
+
+
+**总而言之这一阶段就是判断+模板编译**
+
+### 3. beforeMount
+
+
+
+**此时的状态**![image-20200922131537851](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922131537851.png)
+
+**按常理讲，这里应该还没有$el。这里打印出来的是在created到beforeMount之间时期创建的虚拟DOM，无法被操作和渲染数据**
+
+
+
+**关于el![image-20200922131829717](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922131829717.png)**
+
+
+
+#### 3. beforeMount—mounted
+
+![image-20200922132814679](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922132814679.png)
+
+**可以看到这时是给vue实例对象添加$el成员，并且替换掉之前掉挂在vue实例对象的虚拟DOM**
+
+**注意以下截图**
+
+![image-20200922133052974](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922133052974.png)
+
+**在mounted之前这个h1中还是通过{{message}}进行占位的，这说明什么，说明此时是虚拟dom，无法进行操作和渲染。而mounted状态{{message}}被替换成了真正的内容，这是完成了真正的挂载。**
+
+
+
+### 4. mounted
+
+**这个时候，实例挂载完成完毕，dom渲染完毕。 是最适合进行一些数据请求，数据赋值操作的时期（因为拿到数据后就可以进行下一步渲染）**
+
+**在mounted时期更新被观察者对象内的属性时，会触发beforeUpdate和updated**
+
+
+
+**<u>注意，以上四个生命周期阶段，每个组件只会经历一次。</u>**
+
+
+
+### 5. beforeUpdate — updated
+
+![image-20200922142805732](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922142805732.png)
+
+****
+
+**beforeUpdate时期会响应被观察者对象内属性的变化并更新其值，但view层并未重新渲染，这时最后一个能够更新属性的机会。**
+
+
+
+**Update时期是在view层重新渲染后触发。所以不能再这个时期进行属性的更新，因为更新又触发beforeUpdate，然后又触发Update，最后死循环。**
+
+
+
+### 6. beforeDestory — destoryed
+
+![image-20200922143726505](C:\Users\19823\AppData\Roaming\Typora\typora-user-images\image-20200922143726505.png)
+
+**beforeDestory在实例销毁前调用，到这一步实例也是可以使用的。**
+
+**destoryed是在实例销毁后调用，这时候vue实例内的所有东西都解绑了。**
 
